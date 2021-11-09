@@ -1,5 +1,7 @@
-const router = require('express').Router();
+import { Router } from 'express';
 
-router.get('/:crm', (req, res) => res.send({message: "Hello nurse!"}));
+const router = Router();
 
-module.exports = router
+router.get('/:crm', (req, res) => res.send({ message: 'Hello nurse!' }));
+
+module.exports = router;
