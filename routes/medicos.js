@@ -1,5 +1,5 @@
 const router = require('express').Router();
 
-router.get('/:crm', () => {message: "Hello nurse!"});
+router.get('/:crm', (req, res) => res.send({message: "Hello nurse!"}));
 
 module.exports = router
