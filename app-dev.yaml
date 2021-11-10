@@ -1,0 +1,6 @@
+runtime: nodejs14
+service: registro-medicos-dev
+env_variables:
+  DATABASE_URL: postgres://pxzajrkrmvdbmm:ef7d7c50755d3c9f4064121984e38ad25114dfaa02c4112eb91a4c996baf5e64@ec2-52-86-2-228.compute-1.amazonaws.com:5432/d7696ntmpijag4
+  API_KEY: 2528987712
+  API_URL: https://www.consultacrm.com.br/api/index.php
