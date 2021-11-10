@@ -6,6 +6,7 @@
 require('dotenv-safe').config();
 const appExpress = require('./app');
 const http = require('http');
+const postgres = require('./postgres');
 
 /**
  * Get port from environment and store in Express.
@@ -86,4 +87,11 @@ function onListening() {
         ? 'pipe ' + addr
         : 'port ' + addr.port;
     console.log('Listening on ' + bind);
+    try {
+        postgres.connect();
+        console.log('Connected to Database');
+    } catch (e) {
+        console.error(e);
+        process.exit(2);
+    }
 }
