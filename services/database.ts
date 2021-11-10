@@ -11,7 +11,7 @@ export const getMedicoByCrm = async (crm: number, uf: UF) => {
 
 export const insertMedico = async (medico: Medico) => {
     const dbResponse = await query(
-        'INSERT INTO medicos (crm, uf, nome) VALUES $1, $2, $3',
+        'INSERT INTO medicos (crm, uf, nome) VALUES ($1, $2, $3)',
         [medico.crm, medico.uf, medico.nome]
     );
 
