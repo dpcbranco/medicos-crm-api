@@ -1,0 +1,134 @@
+{
+    "openapi": "3.0.2",
+    "info": {
+        "version": "0.0.1",
+        "title": "API de consulta de médicos",
+        "description": "API que permite consultar o cadastro de médicos na base do CRM de forma gratuita, consultando médicos em uma API externa e armazenando-os em um banco de dados. Dessa forma, a consulta a essa API externa que é limitada no modo gratuito é feita apenas para casos onde o médico ainda não possua cadastro."
+    },
+    "paths": {
+        "/medicos/{crm}/{uf}": {
+            "get": {
+                "summary": "Obtém dados do médico a partir do CRM e da UF",
+                "tags": ["médicos"],
+                "parameters": [
+                    {
+                        "in": "path",
+                        "name": "crm",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "example": 12345
+                        }
+                    },
+                    {
+                        "in": "path",
+                        "name": "uf",
+                        "required": true,
+                        "schema": {
+                            "$ref": "#/components/schemas/UF"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dados do médico encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "$ref": "#/components/schemas/Medico"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Médico não encontrado",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "default": "Médico não encontrado"
+                                        }
+                                    }
+                                }
+                            }
+                        } 
+                    },
+                    "500": {
+                        "description": "Erro na chamada a API",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "error": {
+                                            "type": "string",
+                                            "example": "Falha na busca no banco de dados"
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "components": {
+        "schemas": {
+            "Medico": {
+                "type": "object",
+                "properties": {
+                    "id": {
+                        "type": "number",
+                        "example": 1
+                    },
+                    "crm": {
+                        "type": "integer",
+                        "example": 12345
+                    },
+                    "uf": {
+                        "$ref": "#/components/schemas/UF"
+                    },
+                    "nome": {
+                        "type": "string",
+                        "maxLength": 50,
+                        "example": "Daniel Pereira Castelo Branco"
+                    }
+                }
+            },
+            "UF": {
+                "type": "string",
+                "enum": [
+                    "AC",
+                    "AL",
+                    "AP",
+                    "AM",
+                    "BA",
+                    "CE",
+                    "ES",
+                    "GO",
+                    "MA",
+                    "MT",
+                    "MS",
+                    "MG",
+                    "PA",
+                    "PB",
+                    "PR",
+                    "PE",
+                    "PI",
+                    "RJ",
+                    "RN",
+                    "RS",
+                    "RO",
+                    "RR",
+                    "SC",
+                    "SP",
+                    "SE",
+                    "TO",
+                    "DF"
+                ]
+            }
+        }
+    }
+}
