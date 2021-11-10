@@ -1,7 +1,7 @@
 {
     "openapi": "3.0.2",
     "info": {
-        "version": "0.0.1",
+        "version": "1.0.0",
         "title": "API de consulta de médicos",
         "description": "API que permite consultar o cadastro de médicos na base do CRM de forma gratuita, consultando médicos em uma API externa e armazenando-os em um banco de dados. Dessa forma, a consulta a essa API externa que é limitada no modo gratuito é feita apenas para casos onde o médico ainda não possua cadastro."
     },
