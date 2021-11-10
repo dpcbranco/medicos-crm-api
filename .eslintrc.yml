@@ -29,3 +29,5 @@ rules:
   object-curly-spacing:
     - error
     - always
+  '@typescript-eslint/no-var-requires': 
+    - 0
