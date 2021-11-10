@@ -1,4 +1,4 @@
-import fetch from 'node-fetch';
+import fetch from 'cross-fetch';
 import { ApiError } from '../types/ApiError';
 import { ConsultaCrmResponse } from '../types/ConsultaCrmResponse';
 import { Medico } from '../types/Medico';
