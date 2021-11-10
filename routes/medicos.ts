@@ -1,5 +1,7 @@
+import { getMedico } from '../controller/medicos';
+
 const router = require('express').Router();
 
-router.get('/:crm', (req, res) => res.send({ message: 'Hello nurse!' }));
+router.get('/:crm/:uf', getMedico);
 
 module.exports = router;
