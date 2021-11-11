@@ -4,7 +4,8 @@
   "private": true,
   "scripts": {
     "dev": "nodemon",
-    "start": "node ./server.js"
+    "start": "node ./server.js",
+    "gcp-build": "tsc -p ."
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
