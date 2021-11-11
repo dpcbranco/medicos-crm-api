@@ -12,11 +12,22 @@ export const searchByCrm = async (
     const apiUrl = process.env.API_URL;
     const apiKey = process.env.API_KEY;
     return await fetch(
-        `${apiUrl}?tipo=crm&uf=${uf}&q=${crm}&chave=${apiKey}&destino=json`,
+        `${apiUrl}?tipo=crm&uf=${uf}&q=${crm}&chave=${apiKey}&destino=json`
     ).then(async (res) => {
-        const apiResponse = await res.json();
+        const apiResponse = await res.text().then(
+            (strResponse) => {
+                try {
+                    return JSON.parse(strResponse);
+                } catch (_) {
+                    console.error(
+                        `Erro chamando API com CRM-UF: ${crm}-$${uf}: 
+                        ${strResponse}`
+                    );
+                    return strResponse;
+                }
+            }
+        );
         const apiError: ApiError = new ApiError();
-
         if (res.ok) {
             if (typeof(apiResponse) === 'object'){
                 const medicoApi: ConsultaCrmResponse = {
@@ -43,16 +54,12 @@ export const searchByCrm = async (
 
                 return apiError;
             }
+            
             apiError.error = 'Erro na conversão da resposta da API';
             apiError.status = 500;
 
             return apiError;
         }
-
-        console.error(
-            `Erro chamando API com CRM-UF: ${crm}-$${uf}: 
-            ${apiResponse}`
-        );
 
         apiError.error = 'Falha na chamada da API';
         apiError.status = 500;
