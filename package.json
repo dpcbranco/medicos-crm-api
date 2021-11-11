@@ -1,6 +1,6 @@
 {
   "name": "medicos-crm-api",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "scripts": {
     "dev": "nodemon",
@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
+    "cross-fetch": "^3.1.4",
     "debug": "~2.6.9",
     "dotenv-safe": "^8.2.0",
     "express": "~4.16.1",
