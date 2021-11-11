@@ -14,17 +14,19 @@ export const searchByCrm = async (
     return await fetch(
         `${apiUrl}?tipo=crm&uf=${uf}&q=${crm}&chave=${apiKey}&destino=json`,
     ).then(async (res) => {
+        const apiResponse = await res.json();
+        const apiError: ApiError = new ApiError();
+
         if (res.ok) {
-            const medicoApiJson = await res.json();
-            if (typeof(medicoApiJson) === 'object'){
+            if (typeof(apiResponse) === 'object'){
                 const medicoApi: ConsultaCrmResponse = {
-                    api_consultas: medicoApiJson['api_consultas'],
-                    api_limite: medicoApiJson['api_limite'],
-                    item: medicoApiJson['item'],
-                    mensagem: medicoApiJson['mensagem'],
-                    status: medicoApiJson['status'],
-                    total: medicoApiJson['total'],
-                    url: medicoApiJson['url']
+                    api_consultas: apiResponse['api_consultas'],
+                    api_limite: apiResponse['api_limite'],
+                    item: apiResponse['item'],
+                    mensagem: apiResponse['mensagem'],
+                    status: apiResponse['status'],
+                    total: apiResponse['total'],
+                    url: apiResponse['url']
                 };
                 if (medicoApi.item.length !== 0){
                     const medicoDB: Medico = {
@@ -35,23 +37,26 @@ export const searchByCrm = async (
                     insertMedico(medicoDB);
                     return medicoDB;
                 }
-                const apiError: ApiError = {
-                    error: 'Médico não encontrado na API',
-                    status: 404
-                };
+                
+                apiError.error =  'Médico não encontrado na API',
+                apiError.status = 404;
+
                 return apiError;
             }
-            const apiError: ApiError = {
-                error: 'Erro na conversão da resposta da API',
-                status: 500
-            }; 
+            apiError.error = 'Erro na conversão da resposta da API';
+            apiError.status = 500;
+
             return apiError;
         }
 
-        const apiError: ApiError = {
-            error: 'Falha na chamada da API',
-            status: 500
-        }; 
+        console.error(
+            `Erro chamando API com CRM-UF: ${crm}-$${uf}: 
+            ${apiResponse}`
+        );
+
+        apiError.error = 'Falha na chamada da API';
+        apiError.status = 500;
+
         return apiError;
     });
 };
