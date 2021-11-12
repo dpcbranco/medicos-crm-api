@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "nodemon",
-    "start": "node ./server.js",
+    "start": "tsc -p . && node ./server.js",
     "gcp-build": "tsc -p ."
   },
   "dependencies": {
