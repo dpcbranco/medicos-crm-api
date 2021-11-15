@@ -1,4 +1,6 @@
 const fetch = require('node-fetch');
+const parser = require('xml2json');
+
 
 const { ApiError } = require('../types/ApiError');
 const { UF } = require('../types/UF');
@@ -11,12 +13,13 @@ const searchByCrm = async (
     const apiUrl = process.env.API_URL;
     const apiKey = process.env.API_KEY;
     return await fetch(
-        `${apiUrl}?tipo=crm&uf=${uf}&q=${crm}&chave=${apiKey}&destino=json`
+
+        `${apiUrl}?tipo=crm&uf=${uf}&q=${crm}&chave=${apiKey}&destino=xml`
     ).then(async (res) => {
         const apiResponse = await res.text().then(
             (strResponse) => {
                 try {
-                    return JSON.parse(strResponse);
+                    return JSON.parse(parser.toJson(strResponse));
                 } catch (_) {
                     console.error(
                         `Erro chamando API com CRM-UF: ${crm}-$${uf}: 
@@ -30,19 +33,19 @@ const searchByCrm = async (
         if (res.ok) {
             if (typeof(apiResponse) === 'object'){
                 const medicoApi = {
-                    api_consultas: apiResponse['api_consultas'],
-                    api_limite: apiResponse['api_limite'],
-                    item: apiResponse['item'],
-                    mensagem: apiResponse['mensagem'],
-                    status: apiResponse['status'],
-                    total: apiResponse['total'],
-                    url: apiResponse['url']
+                    api_consultas: apiResponse.rss.channel['api_consultas'],
+                    api_limite: apiResponse.rss.channel['api_limite'],
+                    item: apiResponse.rss.channel['item'],
+                    mensagem: apiResponse.rss.channel['mensagem'],
+                    status: apiResponse.rss.channel['status'],
+                    total: apiResponse.rss.channel['total'],
+                    url: apiResponse.rss.channel['url']
                 };
-                if (medicoApi.item.length !== 0){
+                if (medicoApi.item){
                     const medicoDB = {
-                        crm: Number(medicoApi.item[0].numero),
-                        uf: UF[medicoApi.item[0].uf],
-                        nome: medicoApi.item[0].nome
+                        crm: Number(medicoApi.item.numero),
+                        uf: UF[medicoApi.item.uf],
+                        nome: medicoApi.item.nome
                     };
                     insertMedico(medicoDB);
                     return medicoDB;
