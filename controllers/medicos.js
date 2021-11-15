@@ -1,14 +1,12 @@
-import { getMedicoByCrm } from '../services/database';
-import { UF } from '../types/UF';
-import { Request, Response } from 'express';
-import { ApiError } from '../types/ApiError';
-import { Medico } from '../types/Medico';
-import { searchByCrm } from '../services/consultaCrm';
+const { getMedicoByCrm } = require('../services/database');
+const { UF } = require('../types/UF');
+const { ApiError } = require('../types/ApiError');
+const { searchByCrm } = require('../services/consultaCrm');
 
-export const getMedico = async (
-    req: Request,
-    res: Response
-): Promise<Response<ApiError|Medico>> => {
+const getMedico = async (
+    req,
+    res
+) => {
     if (!UF[req.params.uf])
         return res.status(400).send({ error: 'UF inválida' });
     if (isNaN(Number(req.params.crm)))
@@ -32,3 +30,5 @@ export const getMedico = async (
     
     return res.send(dbResponse[0]);
 };
+
+module.exports = { getMedico };
