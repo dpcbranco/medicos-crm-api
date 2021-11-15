@@ -1,19 +1,19 @@
-import { Pool } from 'pg';
+const { Pool } = require('pg');
 
 const pool = new Pool({
     connectionString: process.env.DATABASE_URL,
     ssl: { rejectUnauthorized: false }
 });
 
-export const connect = () => {
+const connect = () => {
     return pool.connect((err) => {
         if (err) throw err;
     });
 };
 
-export const query = async (
-    query: string,
-    values?: Array<string|number>
+const query = async (
+    query,
+    values
 ) => {
     return await pool
         .query(query, values)
@@ -23,4 +23,9 @@ export const query = async (
         .catch((err) => {
             return err;
         });
+};
+
+module.exports = {
+    connect,
+    query
 };
