@@ -1,6 +1,7 @@
 const fetch = require('node-fetch');
 const parser = require('xml2json');
 
+
 const { ApiError } = require('../types/ApiError');
 const { UF } = require('../types/UF');
 const { insertMedico } = require('./database');
@@ -12,6 +13,7 @@ const searchByCrm = async (
     const apiUrl = process.env.API_URL;
     const apiKey = process.env.API_KEY;
     return await fetch(
+
         `${apiUrl}?tipo=crm&uf=${uf}&q=${crm}&chave=${apiKey}&destino=xml`
     ).then(async (res) => {
         const apiResponse = await res.text().then(
