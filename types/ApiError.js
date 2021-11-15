@@ -4,4 +4,4 @@ class ApiError {
     status;
 }
 
-module.exports = ApiError;
+module.exports = { ApiError };

@@ -1,4 +1,4 @@
-module.exports = {
+module.exports = { UF: {
     AC: 'AC',
     AL: 'AL',
     AP: 'AP',
@@ -26,4 +26,4 @@ module.exports = {
     SE: 'SE',
     TO: 'TO',
     DF: 'DF',
-};
+}};
