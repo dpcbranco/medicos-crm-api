@@ -1,4 +1,4 @@
-import { getMedico } from '../controller/medicos';
+const { getMedico } = require('../controllers/medicos');
 
 const router = require('express').Router();
 

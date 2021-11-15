@@ -1,14 +1,13 @@
-import fetch from 'node-fetch';
-import { ApiError } from '../types/ApiError';
-import { ConsultaCrmResponse } from '../types/ConsultaCrmResponse';
-import { Medico } from '../types/Medico';
-import { UF } from '../types/UF';
-import { insertMedico } from './database';
+const fetch = require('node-fetch');
 
-export const searchByCrm = async (
-    crm: number,
-    uf: UF
-): Promise<Medico|ApiError> => {
+const { ApiError } = require('../types/ApiError');
+const { UF } = require('../types/UF');
+const { insertMedico } = require('./database');
+
+const searchByCrm = async (
+    crm,
+    uf
+) => {
     const apiUrl = process.env.API_URL;
     const apiKey = process.env.API_KEY;
     return await fetch(
@@ -27,10 +26,10 @@ export const searchByCrm = async (
                 }
             }
         );
-        const apiError: ApiError = new ApiError();
+        const apiError = new ApiError();
         if (res.ok) {
             if (typeof(apiResponse) === 'object'){
-                const medicoApi: ConsultaCrmResponse = {
+                const medicoApi = {
                     api_consultas: apiResponse['api_consultas'],
                     api_limite: apiResponse['api_limite'],
                     item: apiResponse['item'],
@@ -40,7 +39,7 @@ export const searchByCrm = async (
                     url: apiResponse['url']
                 };
                 if (medicoApi.item.length !== 0){
-                    const medicoDB: Medico = {
+                    const medicoDB = {
                         crm: Number(medicoApi.item[0].numero),
                         uf: UF[medicoApi.item[0].uf],
                         nome: medicoApi.item[0].nome
@@ -67,3 +66,5 @@ export const searchByCrm = async (
         return apiError;
     });
 };
+
+module.exports = { searchByCrm };

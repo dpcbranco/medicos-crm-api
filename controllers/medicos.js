@@ -1,14 +1,12 @@
-import { getMedicoByCrm } from '../services/database';
-import { UF } from '../types/UF';
-import { Request, Response } from 'express';
-import { ApiError } from '../types/ApiError';
-import { Medico } from '../types/Medico';
-import { searchByCrm } from '../services/consultaCrm';
+const { getMedicoByCrm } = require('../services/database');
+const { UF } = require('../types/UF');
+const { ApiError } = require('../types/ApiError');
+const { searchByCrm } = require('../services/consultaCrm');
 
-export const getMedico = async (
-    req: Request,
-    res: Response
-): Promise<Response<ApiError|Medico>> => {
+const getMedico = async (
+    req,
+    res
+) => {
     if (!UF[req.params.uf])
         return res.status(400).send({ error: 'UF inválida' });
     if (isNaN(Number(req.params.crm)))
@@ -18,11 +16,15 @@ export const getMedico = async (
     const uf = UF[req.params.uf];
 
     const dbResponse = await getMedicoByCrm(crm, uf);
-    if (dbResponse instanceof Error)
+    if (dbResponse instanceof Error) {
+        console.error(dbResponse)
         return res.status(500).send({ error: dbResponse.message });
+    }
     if (dbResponse.length === 0){
         const apiResponse = await searchByCrm(crm, uf);
-        if (apiResponse instanceof ApiError){
+        if (apiResponse instanceof ApiError) {
+            if (apiResponse.status === 500)
+                console.error(apiResponse)
             return res
                 .status(apiResponse.status ?? 500)
                 .send({ error: apiResponse.error });
@@ -32,3 +34,5 @@ export const getMedico = async (
     
     return res.send(dbResponse[0]);
 };
+
+module.exports = { getMedico };
