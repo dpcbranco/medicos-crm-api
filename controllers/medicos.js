@@ -16,11 +16,15 @@ const getMedico = async (
     const uf = UF[req.params.uf];
 
     const dbResponse = await getMedicoByCrm(crm, uf);
-    if (dbResponse instanceof Error)
+    if (dbResponse instanceof Error) {
+        console.error(dbResponse)
         return res.status(500).send({ error: dbResponse.message });
+    }
     if (dbResponse.length === 0){
         const apiResponse = await searchByCrm(crm, uf);
-        if (apiResponse instanceof ApiError){
+        if (apiResponse instanceof ApiError) {
+            if (apiResponse.status === 500)
+                console.error(apiResponse)
             return res
                 .status(apiResponse.status ?? 500)
                 .send({ error: apiResponse.error });
