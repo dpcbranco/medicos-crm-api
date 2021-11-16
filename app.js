@@ -3,6 +3,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const swaggerUI = require('swagger-ui-express');
 const swaggerFile = require('./swagger.json');
+const cors = require('cors');
 
 const app = express();
 
@@ -12,6 +13,7 @@ app.use(logger('dev'));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
+app.use(cors());
 
 app.use('/medicos', medicosRouter);
 app.use('', swaggerUI.serve, swaggerUI.setup(swaggerFile));
