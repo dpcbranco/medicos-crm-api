@@ -9,7 +9,7 @@ const getMedicoByCrm = async (crm, uf) => {
 
 const insertMedico = async (medico) => {
     const dbResponse = await query(
-        'INSERT INTO medicos (crm, uf, nome) VALUES ($1, $2, $3)',
+        'INSERT INTO medicos (crm, uf, nome) VALUES ($1, $2, $3) RETURNING ID',
         [medico.crm, medico.uf, medico.nome]
     );
 
